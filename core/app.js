@@ -163,6 +163,7 @@ App.prototype.loadTheApplication = function () {
       _frameworkOptions.app = that;
       if (!that.eliminate) {
         _frameworkOptions.taskChain = new TaskManager([
+          "spritemapper",
           "preSort",
           "dependency",
           "merge",
@@ -172,6 +173,7 @@ App.prototype.loadTheApplication = function () {
         ]).getTaskChain();
       } else {
         _frameworkOptions.taskChain = new TaskManager([
+          "spritemapper",
           "preSort",
           "dependency",
           "analyze",
@@ -251,6 +253,7 @@ App.prototype.loadTheMProject = function () {
       /* Definition of standard build chain for The-M-Project's core files*/
       if (!that.eliminate) {
         _frameworkOptions.taskChain = new TaskManager([
+          "spritemapper",
           "dependency",
           "merge",
           "minify",
@@ -259,6 +262,7 @@ App.prototype.loadTheMProject = function () {
         ]).getTaskChain();
       } else {
         _frameworkOptions.taskChain = new TaskManager([
+          "spritemapper",
           "dependency",
           "analyze",
           "eliminate",

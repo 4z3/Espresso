@@ -1,0 +1,25 @@
+#! /bin/sh
+#
+# Wrapper to install and call a local version of spritemapper.
+#
+set -euf
+
+## change to spritemapper directory
+readlink="`readlink -f "$0"`"
+dirname="`dirname "$readlink"`"
+pushd "$dirname/../submodules/Spritemapper" >/dev/null
+
+spritemapper="$PWD/usr/bin/spritemapper"
+
+if ! test -e $spritemapper; then
+  python setup.py install --root "$PWD"
+fi
+
+## we assume there's only one python* directory... else we will die...
+SM_PYTHON_PATH="`
+  find "$PWD/usr/lib" -name 'python*' -d -mindepth 1 -maxdepth 1
+`/site-packages"
+popd
+
+export PYTHONPATH="$SM_PYTHON_PATH${PYTHONPATH+:$PYTHONPATH}"
+exec $spritemapper "$@"
