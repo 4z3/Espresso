@@ -10,3 +10,6 @@
 [submodule "node_modules/Mu"]
 	path = node_modules/Mu
 	url = https://github.com/pfleidi/Mu.git
+[submodule "submodules/Spritemapper"]
+	path = submodules/Spritemapper
+	url = git://github.com/yostudios/Spritemapper.git
