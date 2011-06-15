@@ -361,6 +361,29 @@ App.prototype.buildIndexHTML = function (callback, _frameworkNamesForIndexHtml, 
       _displayName = this.displayName ? this.displayName : this.name,
       _indexHtml = [];
 
+  // helper functions
+
+  function _pushScriptPath(path) {
+    _indexHtml.push(HTML('script', {
+      type: 'application/javascript',
+      src: path
+    }, ''));
+  };
+
+  function _pushScript(innerHTML) {
+    _indexHtml.push(HTML('script', {
+      type: 'application/javascript'
+    }, innerHTML));
+  };
+
+  function _pushStyle(path) {
+    _indexHtml.push(HTML('link', {
+      type: 'text/css',
+      href: path,
+      rel: 'stylesheet'
+    }));
+  };
+
   if (_HEAD_IndexHtml.length === 0) {
     var fallback_header_information = {
       meta: [
@@ -414,79 +437,42 @@ App.prototype.buildIndexHTML = function (callback, _frameworkNamesForIndexHtml, 
       that.coreFrameworks[name].files.forEach(function (file) {
         switch (true) {
           case (file.isJavaScript()):
-            return _indexHtml.push(HTML('script', {
-              type: 'application/javascript',
-              src: file.getBaseName() + file.getFileExtension()
-            }, ''));
+            _pushScriptPath(file.getBaseName() + file.getFileExtension());
+            break;
           case (file.isStylesheet()):
-            return _indexHtml.push(HTML('link', {
-              type: 'text/css',
-              href: 'theme/' + file.getBaseName() + file.getFileExtension(),
-              rel: 'stylesheet'
-            }));
+            _pushStyle('theme/' + file.getBaseName() + file.getFileExtension());
+            break;
         };
       });
     };
   });
-    
-  ['theme/style.css'].forEach(function (path) {
-    _indexHtml.push(HTML('link', {
-      type: 'text/css',
-      href: path,
-      rel: 'stylesheet'
-    }));
-  });
 
-  ['core.js', 'ui.js'].forEach(function (path) {
-    _indexHtml.push(HTML('script', {
-      type: 'application/javascript',
-      src: path
-    }, ''));
-  });
+  _pushStyle('theme/style.css');
 
-  _frameworkNamesForIndexHtml.forEach(function (name) {
-    _indexHtml.push(HTML('script', {
-      type: 'application/javascript',
-      src: name
-    }, ''));
-  });
+  ['core.js', 'ui.js'].forEach(_pushScriptPath);
+
+  _frameworkNamesForIndexHtml.forEach(_pushScriptPath);
 
   if (this.supportedLanguages.length > 0) {
     this.supportedLanguages.forEach(function (lang) {
-      _indexHtml.push(HTML('script', {
-        type: 'application/javascript',
-        src: lang + '.js'
-      }, ''));
+      _pushScriptPath(lang + '.js');
     });
   };
 
   var PhoneGap = this.environment === 'PhoneGap';
   if (PhoneGap) {
-    _indexHtml.push(HTML('script', {
-      type: 'application/javascript',
-      src: 'phonegap.js'
-    }, ''));
+    _pushScriptPath('phonegap.js');
   };
-  _indexHtml.push(HTML('script', {
-    type: 'application/javascript'
-  }, 'var PhoneGap = ' + PhoneGap + ';'));
+  _pushScript('var PhoneGap = ' + PhoneGap + ';'
+      + 'var ' + this.name + ' = ' + this.name + ' || {};'
+      + 'M.Application.name = ' + JSON.stringify(this.name) + ';'
+  );
 
-  _indexHtml.push(HTML('script', {
-    type: 'application/javascript'
-  }, 'var ' + this.name + ' = ' + this.name + ' || {};'
-  +  'M.Application.name = ' + JSON.stringify(this.name) + ';'
-  ));
-
-  _indexHtml.push(HTML('script', {
-    type: 'application/javascript',
-    src: this.name + '_App.js'
-  }, ''));
+  _pushScriptPath(this.name + '_App.js');
 
   _indexHtml.push(HTML('body'));
 
-  _indexHtml.push(HTML('script', {
-    type: 'application/javascript'
-  }, this.name + '.app.main();'));
+  _pushScript(this.name + '.app.main();');
 
   _indexHtml.push(HTML('/body'));
   _indexHtml.push(HTML('/html'));
