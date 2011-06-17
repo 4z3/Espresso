@@ -9,11 +9,18 @@ exports.duty = function (callback) {
   defaults.configFilename = defaults.applicationDirectory + '/config.json';
 
   defaults.index = {
-    doctype: 'html',
-    head : {
+    head: {
       meta: [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
-        { name: 'apple-mobile-web-app-status-bar-style', content: 'default' }
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'default' },
+        { name: 'viewport',
+          content:
+            [ 'initial-scale=1.0'
+            , 'minimum-scale=1.0'
+            , 'maximum-scale=1.0'
+            , 'user-scalable=no'
+            ]
+        }
       ],
       link: [
         { rel: 'apple-touch-icon', href: '/theme/images/apple-touch-icon.png' }
