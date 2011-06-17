@@ -10,3 +10,15 @@
 [submodule "node_modules/Mu"]
 	path = node_modules/Mu
 	url = https://github.com/pfleidi/Mu.git
+[submodule "node_modules/jsdom"]
+	path = node_modules/jsdom
+	url = git@github.com:/tmpvar/jsdom
+[submodule "node_modules/request"]
+	path = node_modules/request
+	url = git@github.com:/mikeal/request.git
+[submodule "node_modules/cssom"]
+	path = node_modules/cssom
+	url = git@github.com:/NV/CSSOM.git
+[submodule "node_modules/node-htmlparser"]
+	path = node_modules/node-htmlparser
+	url = git@github.com:/tautologistics/node-htmlparser
