@@ -9,6 +9,7 @@ exports.duty = function (callback) {
   defaults.configFilename = defaults.applicationDirectory + '/config.json';
 
   defaults.index = {
+    scripts: [],
     head: {
       meta: [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
