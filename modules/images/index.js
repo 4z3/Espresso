@@ -1,12 +1,13 @@
 
-// module: scripts
+// module: images
 
 exports.deps = [ 'files', 'config' ];
 exports.revdep = [ 'cache.manifest' ];
 
 exports.duty = function (callback) {
   var files = this.files;
-  var scripts = this.config.scripts;
+  var config = this.config;
+  var images = config.images;
 
   Object.keys(files).forEach(function (filename) {
     var match = /\.([^.]+)$/.exec(filename);
@@ -14,16 +15,20 @@ exports.duty = function (callback) {
       var ext = match[1];
       // TODO put file into some cache
       // TODO put this into a Content-Type-detection module
+
       switch (ext) {
-        case 'js':
+        case 'png':
+        case 'jpg':
+        case 'gif':
+        case 'svg':
           var file = files[filename];
-          file.type = 'application/javascript';
+          file.type = config.types[ext];
           file.href = require('path').basename(filename);
-          scripts.push(file);
+          images.push(file);
           break;
       };
     };
   });
 
-  callback(scripts);
+  callback(images);
 };

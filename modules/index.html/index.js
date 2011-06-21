@@ -3,7 +3,7 @@
 
 jsdom = require('jsdom');
 
-exports.deps = [ 'config', 'cache.manifest', 'scripts' ];
+exports.deps = [ 'config', 'cache.manifest', 'scripts', 'styles' ];
 
 exports.duty = function (callback) {
   var config = this.config;

@@ -1,7 +1,8 @@
 
 // module: styles
 
-exports.deps = [ 'files', 'config' ];
+exports.deps = [ 'config', 'files', 'images' ];
+exports.revdep = [ 'cache.manifest' ];
 
 exports.duty = function (callback) {
   var files = this.files;

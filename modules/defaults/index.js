@@ -33,6 +33,19 @@ exports.duty = function (callback) {
   defaults.files = {};
   defaults.scripts = [];
   defaults.styles = [];
+  defaults.images = [];
+
+  defaults.types = {
+    'js': 'application/javascript',
+    'css': 'text/css',
+    'manifest': 'text/cache-manifest',
+    'html': 'text/html',
+    'png': 'image/png',
+    'jpg': 'image/jpeg',
+    'gif': 'image/gif',
+    'svg': 'image/svg+xml',
+    'json': 'application/json'
+  };
   
   callback(defaults);
 };
