@@ -8,6 +8,8 @@ exports.duty = function (callback) {
   defaults.applicationDirectory = process.cwd();
   defaults.configFilename = defaults.applicationDirectory + '/config.json';
 
+  defaults.buildVersion = Date.now();
+
   defaults.index = {
     head: {
       meta: [
