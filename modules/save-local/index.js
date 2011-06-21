@@ -22,17 +22,23 @@ exports.duty = function (callback) {
 
   Object.keys(files).forEach(function (filename) {
     var file = files[filename];
-    var path = join(outputDirectory, file.requestPath);
-    mkdirs(dirname(path), 0755, function () {
-      // TODO encoding?
-      writeFile(path, file.content, function (err) {
-        if (err) {
-          console.error('Error:', err.stack);
-        };
-        if (--count === 0) {
-          callback();
-        };
+    if (file.requestPath) {
+      var path = join(outputDirectory, file.requestPath);
+      mkdirs(dirname(path), 0755, function () {
+        // TODO encoding?
+        writeFile(path, file.content, function (err) {
+          if (err) {
+            console.error('Error:', err.stack);
+          };
+          if (--count === 0) {
+            callback();
+          };
+        });
       });
-    });
+    } else {
+      if (--count === 0) {
+        callback();
+      };
+    };
   });
 };

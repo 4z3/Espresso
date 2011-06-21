@@ -38,13 +38,15 @@ exports.duty = function (callback) {
     });
 
     scripts.forEach(function (file) {
-      try {
-        var element = window.document.createElement('script');
-        element.type = file.type;
-        element.src = file.requestPath;
-        $('head').append(element);
-      } catch (exn) {
-        console.error(exn.stack); // TODO communicate to callback
+      if (file.requestPath) {
+        try {
+          var element = window.document.createElement('script');
+          element.type = file.type;
+          element.src = file.requestPath;
+          $('head').append(element);
+        } catch (exn) {
+          console.error(exn.stack); // TODO communicate to callback
+        };
       };
     });
 
