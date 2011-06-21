@@ -2,7 +2,7 @@
 // module: jquery
 
 exports.deps = [ 'config' ];
-exports.revdeps = [ 'index.html', 'foobar' ];
+exports.revdeps = [ 'files', 'foobar' ];
 
 exports.duty = require('../../lib/espresso_utils').collectFiles;
 

@@ -12,7 +12,7 @@ exports.deps = [
 , 'themes'
 , 'tmp_themes'
 ];
-exports.revdeps = [ 'index.html' ];
+exports.revdeps = [ 'files' ];
 
 exports.duty = function (callback) {
   callback();

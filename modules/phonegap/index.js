@@ -5,7 +5,7 @@ exports.deps = [ 'config' ];
 // TODO phonegap has to place itself into index.html-skel
 // TODO how to enable phonegap?
 
-exports.before = [ 'index.html' ];
+exports.before = [ 'files' ];
 
 exports.duty = function (callback) {
 

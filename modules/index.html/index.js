@@ -3,7 +3,7 @@
 
 jsdom = require('jsdom');
 
-exports.deps = [ 'config' ];
+exports.deps = [ 'config', 'cache.manifest', 'scripts' ];
 
 exports.duty = function (callback) {
   var config = this.config;
@@ -23,7 +23,7 @@ exports.duty = function (callback) {
     window.document.title = config.displayName || config.name;
 
     // append all scripts
-    config.index.scripts.forEach(function (file) {
+    config.scripts.forEach(function (file) {
       try {
         var script = window.document.createElement('script');
         script.type = 'application/javascript';
