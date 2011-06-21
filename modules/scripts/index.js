@@ -15,10 +15,10 @@ exports.duty = function (callback) {
       // TODO put this into a Content-Type-detection module
       switch (ext) {
         case 'js':
-          scripts.push({
-            src: require('path').basename(filename),
-            file: files[filename]
-          });
+          var file = files[filename];
+          file.type = 'application/javascript';
+          file.href = require('path').basename(filename);
+          scripts.push(file);
           break;
       };
     };

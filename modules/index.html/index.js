@@ -27,7 +27,7 @@ exports.duty = function (callback) {
       try {
         var script = window.document.createElement('script');
         script.type = 'application/javascript';
-        script.src = file.src;
+        script.src = file.href;
         $('head').append(script);
       } catch (exn) {
         console.error(exn.stack); // TODO communicate to callback
