@@ -8,6 +8,7 @@ exports.deps = [ 'config', 'scripts' ];
 exports.revdep = [ 'cache.manifest' ];
 
 exports.duty = function (callback) {
+  var root_filenames = this.root_filenames;
   var scripts = this.scripts;
   var self = this.self;
   var config = this.config;
@@ -190,13 +191,12 @@ exports.duty = function (callback) {
   
 
   // root_filenames : filename[]
-  var root_filenames = scripts //framework.files
-      .filter(function (file) {
-        return file.analysis;
-      })
-      .map(function (file) {
-        return file.filename
-      });
+  var root_filenames = this.scripts.filter(function (file) {
+    return file.is_root_file;
+  }).map(function (file) {
+    return file.filename;
+  });
+
   reachable
       .filter(is_top_or_second_level)
       .filter(is_relevant)

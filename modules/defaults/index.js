@@ -48,6 +48,7 @@ exports.duty = function (callback) {
   };
 
   defaults.reachable = [];
+  defaults.root_filenames = [];
   
   callback(defaults);
 };
