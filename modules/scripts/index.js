@@ -18,7 +18,7 @@ exports.duty = function (callback) {
         case 'js':
           var file = files[filename];
           file.type = 'application/javascript';
-          file.href = require('path').basename(filename);
+          file.requestPath = require('path').basename(filename);
           scripts.push(file);
           break;
       };

@@ -18,7 +18,7 @@ exports.duty = function (callback) {
         case 'css':
           var file = files[filename];
           file.type = 'text/css';
-          file.href = 'theme/' + require('path').basename(filename);
+          file.requestPath = 'theme/' + require('path').basename(filename);
           styles.push(file);
           break;
       };

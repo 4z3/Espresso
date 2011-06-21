@@ -25,8 +25,8 @@ exports.duty = function (callback) {
   // TODO read excludedFromCaching...
   Object.keys(files).forEach(function (filename) {
     var file = files[filename];
-    if (file.href) {
-      log(file.href);
+    if (file.requestPath) {
+      log(file.requestPath);
     };
   });
 
@@ -46,7 +46,7 @@ exports.duty = function (callback) {
   files['cache.manifest'] = {
     content: content.join('\r\n'),
     type: 'text/cache-manifest',
-    href: 'cache.manifest'
+    requestPath: 'cache.manifest'
   };
 
   callback();

@@ -23,7 +23,7 @@ exports.duty = function (callback) {
         case 'svg':
           var file = files[filename];
           file.type = config.types[ext];
-          file.href = require('path').basename(filename);
+          file.requestPath = 'theme/images/' + require('path').basename(filename);
           images.push(file);
           break;
       };
