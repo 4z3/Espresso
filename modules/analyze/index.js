@@ -24,7 +24,14 @@ exports.duty = function (callback) {
 
     var result = JSLINT(file.content.toString()); // TODO check result?
 
-    var T = deep_copy(JSLINT.tree); // TODO store ast in analysis?
+    if (typeof JSLINT.tree === 'object') {
+      analysis.tree = deep_copy(JSLINT.tree);
+      analysis.tree.walk = function (p, f) {
+        walk(analysis.tree, p, f);
+      };
+    };
+
+    var T = deep_copy(JSLINT.tree);
 
     var the_relevant_parts = ['M', 'm_require', self.name]; // TODO config
     if (config.reachable instanceof Array) {
@@ -48,7 +55,7 @@ exports.duty = function (callback) {
           T.ref = [T.first.value, T.second.value].join('.');
           T.value = '<M-REF>';
           analysis.references[T.ref] = true;
-        });                      
+        });
     // collect <M-REF> X
     walk(T,
         function (T) {
@@ -60,7 +67,7 @@ exports.duty = function (callback) {
           T.value = '<M-REF>';
           analysis.references[T.ref] = true;
         });
-    // collect <M-DEF> 
+    // collect <M-DEF>
     walk(T,
         function (T) {
           return (T.value === '=' &&
@@ -217,7 +224,7 @@ exports.duty = function (callback) {
   log(2, 'reachable_filenames.length:', reachable_filenames.length);
   log(2, 'reachable_filenames:', reachable_filenames);
   
-  
+
   // reachable_graph : { filename -> filename }
   var reachable_graph = {};
   reachable_filenames.forEach(function (filename) {
@@ -252,7 +259,7 @@ function deep_copy(T) {
 /**
  * Walk a tree and execute a function whenever the predicate returns true.
  * The function can be used to modify the tree (in place).
- * 
+ *
  * @param {tree}
  * @param {predicate}
  * @param {function}
