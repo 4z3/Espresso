@@ -7,12 +7,13 @@ exports.deps = [ 'config' ];
 
 exports.duty = function (callback) {
   var config = this.config;
+  var jquery_uri = '../../frameworks/The-M-Project/modules/jquery/jquery-1.6.1.min.js';
 
   //
   // Generate index.html
   //
   var window = jsdom.jsdom().createWindow();
-  jsdom.jQueryify(window, function(window, $) {
+  jsdom.jQueryify(window, [jquery_uri], function(window, $) {
     // remove the jquery script element
     $('script').remove();
 
