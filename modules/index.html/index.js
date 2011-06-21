@@ -7,6 +7,8 @@ exports.deps = [ 'config', 'cache.manifest', 'scripts', 'styles' ];
 
 exports.duty = function (callback) {
   var config = this.config;
+  var scripts = this.scripts;
+  var styles = this.styles;
   var jquery_uri = '../../frameworks/The-M-Project/modules/jquery/jquery-1.6.1.min.js';
 
   //
@@ -22,13 +24,24 @@ exports.duty = function (callback) {
 
     window.document.title = config.displayName || config.name;
 
-    // append all scripts
-    config.scripts.forEach(function (file) {
+    styles.forEach(function (file) {
       try {
-        var script = window.document.createElement('script');
-        script.type = 'application/javascript';
-        script.src = file.requestPath;
-        $('head').append(script);
+        var element = window.document.createElement('link');
+        element.type = file.type;
+        element.href = file.requestPath;
+        element.rel = 'stylesheet';
+        $('head').append(element);
+      } catch (exn) {
+        console.error(exn.stack); // TODO communicate to callback
+      };
+    });
+
+    scripts.forEach(function (file) {
+      try {
+        var element = window.document.createElement('script');
+        element.type = file.type;
+        element.src = file.requestPath;
+        $('head').append(element);
       } catch (exn) {
         console.error(exn.stack); // TODO communicate to callback
       };
