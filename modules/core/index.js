@@ -1,5 +1,5 @@
 
-// module: The-M-Project
+// module: core
 
 exports.deps = [
   'config'
@@ -9,13 +9,7 @@ exports.deps = [
 , 'jquery_mobile_plugins'
 , 'jquery_mobile_plugins-theme'
 , 'underscore'
-, 'themes'
-, 'tmp_themes'
-, 'ui'
-, 'core'
 ];
 exports.revdeps = [ 'files' ];
 
-exports.duty = function (callback) {
-  callback();
-};
+exports.duty = require('../../lib/espresso_utils').collectFiles;
