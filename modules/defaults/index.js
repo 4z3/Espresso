@@ -46,6 +46,8 @@ exports.duty = function (callback) {
     'svg': 'image/svg+xml',
     'json': 'application/json'
   };
+
+  defaults.reachable = [];
   
   callback(defaults);
 };
