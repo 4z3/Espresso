@@ -22,3 +22,6 @@
 [submodule "node_modules/node-htmlparser"]
 	path = node_modules/node-htmlparser
 	url = git@github.com:/tautologistics/node-htmlparser
+[submodule "node_modules/node-utils"]
+	path = node_modules/node-utils
+	url = git://github.com/mikeal/node-utils.git
