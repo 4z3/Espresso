@@ -22,3 +22,6 @@
 [submodule "node_modules/node-utils"]
 	path = node_modules/node-utils
 	url = git://github.com/mikeal/node-utils.git
+[submodule "node_modules/node-http-proxy"]
+	path = node_modules/node-http-proxy
+	url = https://github.com/nodejitsu/node-http-proxy.git
