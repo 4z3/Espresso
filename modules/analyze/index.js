@@ -5,7 +5,7 @@ JSLINT = require('../../lib/jslint').JSLINT;
 Graph = require('../../lib/graph');
 
 exports.deps = [ 'config', 'scripts' ];
-exports.revdep = [ 'cache.manifest' ];
+exports.revdeps = [ 'cache.manifest' ];
 
 exports.duty = function (callback) {
   var root_filenames = this.root_filenames;
