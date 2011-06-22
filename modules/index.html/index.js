@@ -37,6 +37,7 @@ exports.duty = function (callback) {
       };
     });
 
+    console.log('index.html, scripts:', scripts.map(function (file) { return file.filename } ));
     scripts.forEach(function (file) {
       if ('requestPath' in file) {
         try {
