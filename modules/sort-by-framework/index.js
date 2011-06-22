@@ -2,7 +2,7 @@
 // module: sort-by-framework
 
 exports.deps = [ 'config', 'files', 'scripts', 'sort-by-m_require' ];
-exports.revdeps = [ 'index.html' ];
+exports.revdeps = [ 'index.html', 'merge-by-framework' ];
 
 exports.duty = function (callback) {
 

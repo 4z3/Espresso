@@ -1,8 +1,8 @@
 
 // module: merge-by-framework
 
-exports.deps = [ 'files', 'scripts', 'sort-by-framework' ];
-exports.revdeps = [ 'index.html' ];
+exports.deps = [ 'files', 'scripts', 'sort-by-framework', 'sort-by-m_require' ];
+exports.revdeps = [ 'index.html', 'minify' ];
 
 exports.duty = function (callback) {
 
