@@ -10,6 +10,7 @@ exports.duty = function (callback) {
 
   var red = function (x) { return '[31m' + x + '[m' };
   var green = function (x) { return '[32m' + x + '[m' };
+  var yellow = function (x) { return '[33m' + x + '[m' };
   var bold = function (x) { return '[1m' + x + '[m' };
   var log = function (level) {
     //framework.app.log.apply(framework.app, arguments);
@@ -22,13 +23,19 @@ exports.duty = function (callback) {
   if (reachableGraph) {
     log(2, 'reachableGraph:', reachableGraph);
    
-    scripts.filter(function (file) {
+    scripts.forEach(function (file) {
+      if ([ 'ui', 'core', 'app' ].indexOf(file.framework) < 0) {
+        log(1, bold(yellow(file.filename)));
+        return; // do not eliminate foreign stuff, yet
+      };
+
       if (file.analysis && !(file.filename in reachableGraph)) {
         log(1, bold(red(file.filename)));
         // eliminate file by removing it's requestPath
         delete file.requestPath;
       } else {
-        log(1, bold(green(file.filename)), file.analysis);
+        //log(1, bold(green(file.filename)), file.analysis);
+        log(1, bold(green(file.filename)));
       };
     });
   };
