@@ -20,16 +20,22 @@ exports.duty = function (callback) {
   console.log();
 
   (function walk (that) {
-    Object.keys(that).forEach(function (x) {
-      if (that[x] instanceof Buffer || that[x] instanceof Job) {
-        that[x] = '[...]';
-      } else if (that[x] instanceof Object) {
-        if (that[x].tree instanceof Object) {
-          that[x].tree = '[...]';
+    if (that instanceof Object) {
+      Object.keys(that).forEach(function (x) {
+        if (that[x] instanceof Object) {
+          if (that[x] instanceof Buffer || that[x] instanceof Job) {
+            that[x] = '[...]';
+          } else {
+            [ 'tree', 'content' ].forEach(function (y) {
+              if (y in that[x]) {
+                that[x][y] = '[...]';
+              };
+            });
+            walk(that[x]);
+          };
         };
-        walk(that[x]);
-      };
-    });
+      });
+    };
   })(this);
 
   console.log('== summary ==');
