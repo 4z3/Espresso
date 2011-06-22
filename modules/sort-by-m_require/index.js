@@ -4,7 +4,7 @@
 Graph = require('../../lib/graph');
 
 exports.deps = [ 'config', 'scripts', 'files', 'analyze' ];
-exports.revdep = [ 'index.html' ];
+exports.revdeps = [ 'index.html' ];
 
 exports.duty = function (callback) {
   var config = this.config;

@@ -2,7 +2,7 @@
 // module: images
 
 exports.deps = [ 'files', 'config' ];
-exports.revdep = [ 'cache.manifest' ];
+exports.revdeps = [ 'cache.manifest' ];
 
 exports.duty = function (callback) {
   var files = this.files;
