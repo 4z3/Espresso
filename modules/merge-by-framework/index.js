@@ -12,7 +12,10 @@ exports.duty = function (callback) {
   var scripts = this.scripts;
   var old_scripts = [];
   while (scripts.length > 0) {
-    old_scripts.push(scripts.shift());
+    var file = scripts.shift();
+    if ('requestPath' in file) {
+      old_scripts.push(file);
+    };
   };
 
   // fill scripts with merged scripts
@@ -41,6 +44,8 @@ exports.duty = function (callback) {
     if (file.requestPath === null) {
       mergeInline = true;
     };
+    // eliminate file by removing it's requestPath
+    delete file.requestPath;
   });
   // merge last script
   if (contents.length > 0) {
