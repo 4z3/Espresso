@@ -38,11 +38,16 @@ exports.duty = function (callback) {
     });
 
     scripts.forEach(function (file) {
-      if (file.requestPath) {
+      if ('requestPath' in file) {
         try {
           var element = window.document.createElement('script');
           element.type = file.type;
-          element.src = file.requestPath;
+          if (typeof file.requestPath === 'string') {
+            element.src = file.requestPath;
+          } else {
+            // inline when there's no real requestPath
+            element.innerHTML = file.content;
+          };
           $('head').append(element);
         } catch (exn) {
           console.error(exn.stack); // TODO communicate to callback
