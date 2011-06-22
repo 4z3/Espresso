@@ -1,8 +1,8 @@
 
 // module: eliminate
 
-exports.deps = [ 'scripts', 'analyze' ];
-exports.revdep = [ 'cache.manifest' ];
+exports.deps = [ 'scripts', 'analyze', 'sort-by-framework' ];
+exports.revdeps = [ 'cache.manifest', 'merge-by-framework' ];
 
 exports.duty = function (callback) {
   var scripts = this.scripts;

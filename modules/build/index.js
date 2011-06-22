@@ -11,7 +11,8 @@ exports.deps = [
   'files',
   'scripts',
   'sort-by-m_require',
-  'sort-by-framework'
+  'sort-by-framework',
+  'merge-by-framework'
 ];
 
 exports.duty = function (callback) {
