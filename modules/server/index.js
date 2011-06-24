@@ -37,7 +37,20 @@ exports.duty = function (callback) {
       // TODO honor -m parameter
       defaults.offlineManifest = false;
 
-      schedule([ 'build', 'files' ]).run(function (callback) {
+      var deps = [
+        //'config',
+        'The-M-Project',
+        'index.html',
+        'eliminate',
+        'app',
+        'files',
+        'scripts',
+        'sort-by-m_require',
+        'sort-by-framework',
+        'merge-by-framework'
+      ];
+
+      schedule(deps).run(function (callback) {
 
         // create file table
         file_table = {};
