@@ -20,8 +20,9 @@ exports.duty = function (callback) {
     // remove the jquery script element
     $('script').remove();
 
-    // TODO manifest: this.offlineManifest && 'cache.manifest'
-    $('html').attr('manifest', 'cache.manifest');
+    if (config.manifest) {
+      $('html').attr('manifest', config.manifest.requestPath);
+    };
 
     window.document.title = config.displayName || config.name;
 

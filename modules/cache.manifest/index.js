@@ -49,5 +49,9 @@ exports.duty = function (callback) {
     requestPath: 'cache.manifest'
   };
 
-  callback();
+  if (config.offlineManifest) {
+    config.manifest = files['cache.manifest'];
+  };
+
+  callback(config.manifest);
 };
