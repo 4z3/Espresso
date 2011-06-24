@@ -24,6 +24,7 @@ exports.duty = function (callback) {
     var file = files[filename];
     if (file.requestPath) {
       var path = join(outputDirectory, file.requestPath);
+      console.log('save:', path);
       mkdirs(dirname(path), 0755, function () {
         // TODO encoding?
         writeFile(path, file.content, function (err) {
