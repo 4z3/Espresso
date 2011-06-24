@@ -1,48 +1,69 @@
 
 // module: server
 
-exports.deps = [ 'config', 'build' ];
-
-exports.duty = function (callback) {
-};
+exports.deps = [ 'config', 'build', 'files', 'config', 'proxies' ];
 
 var http = require('http'),
-    httpProxy = require('node-http-proxy');
+    parse = require('url').parse,
+    format = require('url').format,
+    join = require('path').join;
 
-//
-// Create a new instance of HttProxy to use in your server
-//
-var proxy = new httpProxy.HttpProxy();
+exports.duty = function (callback) {
+  var config = this.config;
+  var proxies = this.proxies;
+  var prefix = '/' + config.name;
 
-//
-// Create a regular http server and proxy its handler
-//
-http.createServer(function (req, res) {
-
-  console.log({
-    'req': req,
-    'req.url': req.url,
-    'req.headers.host': req.headers.host
+  // create file table
+  var files = this.files;
+  var file_table = {};
+  Object.keys(this.files).forEach(function (filename) {
+    var file = files[filename];
+    if (typeof file.requestPath === 'string') {
+      var requestPath = join(prefix, file.requestPath);
+      file_table[requestPath] = file;
+    };
   });
 
-  console.log('config:', this.config);
+  // TODO trigger rebuild
+  
+  http.createServer(function (req, res) {
+    var url = parse(req.url, true);
 
-  var host = req.headers.host = 'google.com'; // localhost
-  var port = 80; // 9000
-  var path = req.url = '/index.html';
-
-  //
-  // Put your custom server logic here, then proxy
-  //
-  proxy.proxyRequest(req, res, {
-    host: host,
-    port: port
+    // rewrite
+    // TODO redirect client, when pathname === prefix (?)
+    switch (url.pathname) {
+      case prefix + '/':
+        url.pathname += 'index.html';
+        req.url = format(url);
+    };
+  
+    // dispatch
+    if (url.pathname in file_table) {
+      var file = file_table[url.pathname];
+  
+      var content = file.content;
+      if (!(content instanceof Buffer)) {
+        content = new Buffer(file.content);
+      };
+      content.type = file.type;
+  
+      console.log('serve file:', url.pathname, content.type, content.length);
+      res.writeHead(200, 'OK', {
+        'Content-Length': content.length,
+        'Content-Type': content.type
+      });
+      res.end(content);
+    } else if (!proxies.handle(req, res)) {
+      var content = 'Not found: ' + url.pathname;
+      console.log(content);
+      res.writeHead(404, 'Not Found', {
+        'Content-Type': 'text/plain',
+        'content-Length': content.length
+      });
+      res.end(content);
+    };
+  }).listen(config.port, config.hostname, function () {
+    console.log('Server running at',
+      'http://' + config.hostname + ':' + config.port + prefix);
   });
-}).listen(8001);
-
-//http.createServer(function (req, res) {
-//  res.writeHead(200, { 'Content-Type': 'text/plain' });
-//  res.write('request successfully proxied: ' + req.url +'\n' + JSON.stringify(req.headers, true, 2));
-//  res.end();
-//}).listen(9000); 
-
+};

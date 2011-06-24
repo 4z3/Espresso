@@ -49,6 +49,11 @@ exports.duty = function (callback) {
 
   defaults.reachable = [];
   defaults.root_filenames = [];
+
+  defaults.proxies = [];
+
+  defaults.hostname = '127.0.0.1';
+  defaults.port = '8000';
   
   callback(defaults);
 };
