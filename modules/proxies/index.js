@@ -27,7 +27,7 @@ exports.duty = function (callback) {
   callback(proxies);
 };
 
-function add_proxy(path, uri) {
+function add_proxy(path, url) {
   path = path.split('/');
   var proxy = this.table;
   for (var i = 0, n = path.length; i < n; ++i) {
@@ -35,7 +35,7 @@ function add_proxy(path, uri) {
       proxy = proxy[path[i]] = {};
     };
   };
-  proxy['/'] = uri;
+  proxy['/'] = url;
 };
 
 function has_proxy(path) {
@@ -60,35 +60,41 @@ function get_proxy(path) {
 };
 
 function handle_proxy(req, res) {
-  var uri = parse(req.url, true);
-  var proxy = this.get(uri.pathname);
+  var url = parse(req.url, true);
+  var proxy = this.get(url.pathname);
   if (proxy) {
     //console.log('proxy:', proxy);
-    
+
     switch (proxy.protocol) {
       case 'http:':
+      case 'https:':
+        var config = {
+          'https:': { port: 443, options: { target: { https: true } } },
+          'http:': { port: 80 }
+        }[proxy.protocol];
+
         // rewrite request
         var host = proxy.hostname;
-        var port = Number('port' in proxy ? proxy.port : '80');
-        req.headers.host = port === 80 ? host : [host, port].join(':');
-        uri.pathname = proxy.pathname;
-        req.url = format(uri);
+        var port = Number('port' in proxy ? proxy.port : config.port);
+        req.headers.host = port === config.port ? host : [host, port].join(':');
+        url.pathname = proxy.pathname;
+        req.url = format(url);
     
-        // mangle uri for debug output
-        uri.protocol = proxy.protocol;
-        uri.hostname = proxy.hostname;
-        uri.host = host;
-        uri.port = port;
-        console.log('proxy request:', format(uri));
-    
+        // mangle url for debug output
+        url.protocol = proxy.protocol;
+        url.hostname = proxy.hostname;
+        url.host = host;
+        url.port = port;
+        console.log('proxy request:', format(url));
+
         // delegate request
-        (new httpProxy.HttpProxy()).proxyRequest(req, res, {
+        (new httpProxy.HttpProxy(config.options)).proxyRequest(req, res, {
           host: host,
           port: port
         });
         break;
       default:
-        var content = 'Cannot serve; bad protocol in ' + uri.pathname;
+        var content = 'Cannot serve; bad protocol in ' + format(url);
         console.log(content);
         res.writeHead(500, 'Internal Server Error', {
           'Content-Type': 'text/plain',
