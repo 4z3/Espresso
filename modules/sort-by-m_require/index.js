@@ -32,8 +32,15 @@ exports.duty = function (callback) {
         },
         function (T) {
           // TODO get prefix from file
-          var prefix =
-            config.applicationDirectory +  '/frameworks/The-M-Project/modules/';
+          var prefix;
+          [
+            config.applicationDirectory + '/',
+            config.applicationDirectory + '/frameworks/The-M-Project/modules/',
+          ].forEach(function (cand) {
+            if (file.filename.slice(0, cand.length) === cand) {
+              prefix = cand;
+            };
+          });
           dependency_graph[file.filename].push(prefix + T.second[0].value);
         });
     };
