@@ -26,6 +26,10 @@ exports.duty = function (callback) {
 
     window.document.title = config.displayName || config.name;
 
+    config.htmlHeader.forEach(function (header) {
+      $('head').append(header);
+    });
+
     styles.forEach(function (file) {
       try {
         var element = window.document.createElement('link');
