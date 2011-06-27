@@ -25,3 +25,6 @@
 [submodule "node_modules/node-http-proxy"]
 	path = node_modules/node-http-proxy
 	url = https://github.com/nodejitsu/node-http-proxy.git
+[submodule "node_modules/operetta"]
+	path = node_modules/operetta
+	url = https://github.com/tricknik/node-operetta.git
