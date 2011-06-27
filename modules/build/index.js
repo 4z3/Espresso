@@ -2,13 +2,14 @@
 // module: build
 
 exports.subcommand = {
-  description: "Build a project",
+  description: 'Build a project.',
   parameters: [
     {
       options: ['-d','--directory'],
-      description: 'Specify a custom project directory. Default: $PWD',
+      description:
+        'Specify a custom project directory. Default: ' + process.cwd(),
       handler: 'config',
-      config: 'applicationDirectory'
+      config: 'applicationdirectory'
     }
   ]
 };
