@@ -1,6 +1,18 @@
 
 // module: build
 
+exports.subcommand = {
+  description: "Build a project",
+  parameters: [
+    {
+      options: ['-d','--directory'],
+      description: 'Specify a custom project directory. Default: $PWD',
+      handler: 'config',
+      config: 'applicationDirectory'
+    }
+  ]
+};
+
 exports.deps = [
   'config',
   'The-M-Project',
