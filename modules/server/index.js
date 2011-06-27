@@ -1,6 +1,42 @@
 
 // module: server
 
+// TODO use real defaults from defaults module in descriptions
+exports.subcommand = {
+  description: 'Run the development server.',
+  options: [
+    {
+      options: [ '-m', '--manifest' ],
+      description: 'Enable generation of cache.manifest.',
+      handler: 'config',
+      config: 'offlineManifest'
+    }
+  ],
+  parameters: [
+    {
+      options: ['-d','--directory'],
+      description:
+        'Specify a custom project directory. Default: ' + process.cwd(),
+      handler: 'config',
+      config: 'applicationdirectory'
+    },
+    {
+      options: ['-c','--config'],
+      description:
+        'Specify a custom project directory. Default: '
+        + process.cwd() + '/config.json',
+      handler: 'config',
+      config: 'configFilename'
+    },
+    {
+      options: ['-p','--port'],
+      description: 'Specify a custom port. Default: ' + 8000,
+      handler: 'config',
+      config: 'port'
+    },
+  ]
+};
+
 exports.deps = [ 'defaults', 'config', 'proxies' ];
 
 var http = require('http'),
@@ -8,9 +44,8 @@ var http = require('http'),
     format = require('url').format,
     join = require('path').join;
 
-var schedule = require('slow-job-scheduler').schedule;
-
 exports.duty = function (callback) {
+  var that = this;
   var defaults = this.defaults;
   var config = this.config;
   var proxies = this.proxies;
@@ -37,7 +72,7 @@ exports.duty = function (callback) {
       // TODO honor -m parameter
       defaults.offlineManifest = false;
 
-      var deps = [
+      var agenda = [
         //'config',
         'The-M-Project',
         'index.html',
@@ -50,7 +85,7 @@ exports.duty = function (callback) {
         'merge-by-framework'
       ];
 
-      schedule(deps).run(function (callback) {
+      function dispatcher (_ignored_callback) {
 
         // create file table
         file_table = {};
@@ -64,7 +99,10 @@ exports.duty = function (callback) {
         });
 
         dispatch(req, res);
-      });
+      };
+
+      var Scheduler = require('../../lib/scheduler');
+      Scheduler.schedule(agenda).run(dispatcher, that.self.scheduler.results);
     } else if (proxies.handle(req, res)) {
       /* nothing to do */
     } else if (dispatch(req, res)) {
@@ -80,7 +118,7 @@ exports.duty = function (callback) {
     };
   }).listen(config.port, config.hostname, function () {
     console.log('Server running at',
-      'http://' + config.hostname + ':' + config.port + prefix);
+      'http://' + config.hostname + ':' + config.port + prefix + '/');
   });
 
   function dispatch (req, res) {
