@@ -2,6 +2,6 @@
 
 var Scheduler = require('../lib/scheduler');
 
-Scheduler.schedule(process.argv.slice(2)).run('espresso', function (finish) {
+Scheduler.schedule('espresso').run(function (finish) {
   return finish();
 });
