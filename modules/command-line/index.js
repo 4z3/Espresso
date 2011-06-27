@@ -45,6 +45,22 @@ exports.duty = function (callback) {
           });
         });
 
+        // setup subcommand options
+        sub.options.forEach(function (par) {
+          command.options(par.options, par.description, function (value) {
+            switch (typeof par.handler) {
+              case 'string':
+                switch(par.handler) {
+                  case 'config':
+                    config[par.config] = value;
+                    console.log('set', par.config, 'to', value);
+                    break;
+                };
+                break;
+            };
+          });
+        });
+
         command.banner = 'Usage: espresso ' + module.name + ' [<options>]';
 
         trap_help(config, command);
