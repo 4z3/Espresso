@@ -23,7 +23,7 @@ exports.subcommand = {
     {
       options: ['-c','--config'],
       description:
-        'Specify a custom project directory. Default: '
+        'Specify a custom configuration file. Default: '
         + process.cwd() + '/config.json',
       handler: 'config',
       config: 'configFilename'
