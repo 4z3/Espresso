@@ -72,5 +72,5 @@ exports.duty = function (callback) {
       });
       callback();
     },
-    this.config.applicationDirectory + '/app');
+    this.config.applicationDirectory + '/app'); // TODO add to search path
 };

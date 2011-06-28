@@ -39,6 +39,8 @@ exports.duty = function (callback) {
             config.applicationDirectory + '/frameworks/The-M-Project/modules/',
           ];
 
+          // Note: unlike POSIX' process.env.PATH we push directories to path,
+          // so the last directory containing a file wins... 
 
           // TODO this must already be in config! AKA search path
           if ('libraries' in config) {
@@ -66,12 +68,19 @@ exports.duty = function (callback) {
     };
   });
 
-  console.log(dependency_graph);
+  //console.log(dependency_graph);
+  var logname = '/tmp/sort-by-m_require:dependency_graph.json';
+  console.log('write:', logname);
+  require('fs').writeFileSync(logname, JSON.stringify(dependency_graph, null, 2));
+
   var sorted_scripts = Graph.tsort(dependency_graph);
 
-  console.log();
-  console.log();
-  console.log('tsorted:', sorted_scripts);
+  //console.log();
+  //console.log();
+  //console.log('tsorted:', sorted_scripts);
+  var logname = '/tmp/sort-by-m_require:sorted_scripts.json';
+  console.log('write:', logname);
+  require('fs').writeFileSync(logname, JSON.stringify(sorted_scripts, null, 2));
 
   var scripts = this.scripts;
   var files = this.files;
