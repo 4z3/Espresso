@@ -18,7 +18,7 @@ exports.subcommand = {
       description:
         'Specify a custom project directory. Default: ' + process.cwd(),
       handler: 'config',
-      config: 'applicationdirectory'
+      config: 'applicationDirectory'
     },
     {
       options: ['-c','--config'],
