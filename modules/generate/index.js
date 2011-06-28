@@ -68,20 +68,22 @@ exports.duty = function (callback) {
   var something_went_wrong = false;
 
   function _set_option(from, to) {
-    if (config[from] instanceof Array) {
-      if (config[from].length !== 1) {
-        console.error(
-          'Error: You cannot specify more than one ' + to + '!');
-        //throw new Error('You are made of stupid!');
-        something_went_wrong = true;
+    if (from in config) {
+      if (config[from] instanceof Array) {
+        if (config[from].length !== 1) {
+          console.error(
+            'Error: You cannot specify more than one ' + to + '!');
+          //throw new Error('You are made of stupid!');
+          something_went_wrong = true;
+        } else {
+          options[to] = config[from][0];
+          something_set = true;
+        };
       } else {
-        options[to] = config[from][0];
+        // TODO check harder?
+        config[from] = to;
         something_set = true;
       };
-    } else {
-      // TODO check harder?
-      config[from] = to;
-      something_set = true;
     };
   };
 
@@ -94,13 +96,13 @@ exports.duty = function (callback) {
 
   if (!something_went_wrong) {
     if (!something_set) {
-      throw new Error('No generation was specified!');
+      console.error('No generation was specified!');
+    } else {
+      // call the generator
+      console.log('options', options);
+      var Generator = require(__dirname + '/../../generator/file_generator');
+      Generator.generate(options);
     };
-
-    // call the generator
-    console.log('options', options);
-    var Generator = require(__dirname + '/../../generator/file_generator');
-    Generator.generate(options);
   };
 
   callback();
