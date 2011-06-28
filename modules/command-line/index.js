@@ -83,7 +83,16 @@ exports.duty = function (callback) {
   trap_help(config, operetta);
   operetta.start(function (values) {
     if (!('agenda' in config)) {
+      [ '// Your process.argv[32m'
+      , process.argv
+      , '[m// interpreted as[32m'
+      , values
+      , '[m// is invalid!'
+      , ''
+      ].forEach(function (x) { console.log(x) });
+
       // Set default agenda (if no subcommand has set the agenda).
+      mangle_help_message(operetta);
       force_help(config, operetta);
     };
     callback(config);
