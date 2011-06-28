@@ -6,19 +6,19 @@
 	url = https://github.com/creationix/step.git
 [submodule "node_modules/jsdom"]
 	path = node_modules/jsdom
-	url = git@github.com:/tmpvar/jsdom
+	url = https://github.com/tmpvar/jsdom.git
 [submodule "node_modules/request"]
 	path = node_modules/request
-	url = git@github.com:/mikeal/request.git
+	url = https://github.com/mikeal/request.git
 [submodule "node_modules/cssom"]
 	path = node_modules/cssom
-	url = git@github.com:/NV/CSSOM.git
+	url = https://github.com/NV/CSSOM.git
 [submodule "node_modules/node-htmlparser"]
 	path = node_modules/node-htmlparser
-	url = git@github.com:/tautologistics/node-htmlparser
+	url = https://github.com/tautologistics/node-htmlparser.git
 [submodule "node_modules/node-utils"]
 	path = node_modules/node-utils
-	url = git://github.com/mikeal/node-utils.git
+	url = https://github.com/mikeal/node-utils.git
 [submodule "node_modules/node-http-proxy"]
 	path = node_modules/node-http-proxy
 	url = https://github.com/nodejitsu/node-http-proxy.git
