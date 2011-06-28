@@ -31,7 +31,7 @@ exports.duty = function (callback) {
           filename: filename,
           // TODO ensure there is only one...
           requestPath: mergeInline ? null : name + '.js',
-          content: contents.join(';')
+          content: contents.join('\r\n;')
         });
       };
       name = file.framework;
