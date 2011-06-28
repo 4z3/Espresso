@@ -12,8 +12,7 @@
 /*
  * dependencies
  */
-var Fs = require('fs');
-var File = require('../../core/file').File;
+var mkdir = require('fs').mkdir;
 var Renderer = require('../../lib/renderer');
 
 var generate = exports.generate = function generate(options, config) {
@@ -45,7 +44,7 @@ var generate = exports.generate = function generate(options, config) {
       appName: config.name
     };
 
-    Fs.mkdir(directory, 0755, function (err) {
+    mkdir(directory, 0755, function (err) {
         if (err) {
           // errno 17: folder already exists
           if (err.errno !== 17) {
