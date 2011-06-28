@@ -13,14 +13,13 @@
  * dependencies
  */
 var Fs = require('fs');
-var Sequencer = require('step');
-var File = require('../core/file').File;
-var Renderer = require('../lib/renderer');
-var Utils = require('../lib/espresso_utils');
+var File = require('../../core/file').File;
+var Renderer = require('../../lib/renderer');
+var Utils = require('../../lib/espresso_utils');
 
 var generate = exports.generate = function generate(options) {
-  var espressoPath = __dirname + '/..';
-  var templatePath = __dirname + '/templates';   
+  var espressoPath = __dirname + '/../..';
+  var templatePath = espressoPath + '/generator/templates';   
   var templateRenderer = Renderer.createRenderer(templatePath);
   var config = Utils.readConfig(options.directory);
   var dispatcher = {};

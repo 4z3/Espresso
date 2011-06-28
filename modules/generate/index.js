@@ -100,10 +100,11 @@ exports.duty = function (callback) {
     } else {
       // call the generator
       console.log('options', options);
-      var Generator = require(__dirname + '/../../generator/file_generator');
+      var Generator = require('./file_generator');
       Generator.generate(options);
     };
   };
 
   callback();
 };
+
