@@ -30,36 +30,40 @@ exports.duty = function (callback) {
         command.parent = false;
 
         // setup subcommand parameters
-        sub.parameters.forEach(function (par) {
-          command.parameters(par.options, par.description, function (value) {
-            switch (typeof par.handler) {
-              case 'string':
-                switch(par.handler) {
-                  case 'config':
-                    config[par.config] = value;
-                    console.log('set', par.config, 'to', value);
-                    break;
-                };
-                break;
-            };
+        if (sub.parameters instanceof Array) {
+          sub.parameters.forEach(function (par) {
+            command.parameters(par.options, par.description, function (value) {
+              switch (typeof par.handler) {
+                case 'string':
+                  switch(par.handler) {
+                    case 'config':
+                      config[par.config] = value;
+                      console.log('set', par.config, 'to', value);
+                      break;
+                  };
+                  break;
+              };
+            });
           });
-        });
+        };
 
         // setup subcommand options
-        sub.options.forEach(function (par) {
-          command.options(par.options, par.description, function (value) {
-            switch (typeof par.handler) {
-              case 'string':
-                switch(par.handler) {
-                  case 'config':
-                    config[par.config] = value;
-                    console.log('set', par.config, 'to', value);
-                    break;
-                };
-                break;
-            };
+        if (sub.options instanceof Array) {
+          sub.options.forEach(function (par) {
+            command.options(par.options, par.description, function (value) {
+              switch (typeof par.handler) {
+                case 'string':
+                  switch(par.handler) {
+                    case 'config':
+                      config[par.config] = value;
+                      console.log('set', par.config, 'to', value);
+                      break;
+                  };
+                  break;
+              };
+            });
           });
-        });
+        };
 
         command.banner = 'Usage: espresso ' + module.name + ' [<options>]';
 
