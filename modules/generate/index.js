@@ -81,7 +81,7 @@ exports.duty = function (callback) {
         };
       } else {
         // TODO check harder?
-        config[from] = to;
+        options[to] = config[from];
         something_set = true;
       };
     };
