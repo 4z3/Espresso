@@ -15,16 +15,14 @@ var Fs = require('fs');
 var Util = require('util');
 var Path = require('path');
 var Sequencer = require('step');
-var Style = require('../lib/color');
-var File = require('../core/file').File;
-var Renderer = require('../lib/renderer');
+var Style = require('../../lib/color');
+var renderFile = require('mustache.js').renderFile;
 
 // TODO: Implement transaction mechanism to roll back on error
 
 var generate = exports.generate = function generate(options) {
-  var espressoPath = __dirname + '/..';
-  var templatePath = __dirname + '/templates';   
-  var templateRenderer = Renderer.createRenderer(templatePath);
+  var espressoPath = __dirname + '/../..';
+  var templatePath = espressoPath + '/generator/templates';   
   var tools = ['config.json']; // array with names of build tools, used in the a new project.
   var outPut = [];
   var path;
@@ -117,12 +115,8 @@ var generate = exports.generate = function generate(options) {
       appName: projectName
     };
 
-    templateRenderer.render({
-        templateFile: templateFile,
-        ctx: ctx,
-        outputPath: outputPath,
-        callback: callback
-      });
+    templateFile = templatePath + '/' + templateFile;
+    renderFile(outputPath, templateFile, ctx, callback);
   };
 
   /**
@@ -142,12 +136,8 @@ var generate = exports.generate = function generate(options) {
       e_Version: ''
     };
 
-    templateRenderer.render({
-        templateFile: templateFile,
-        ctx: ctx,
-        outputPath: outputPath,
-        callback: callback
-      });
+    templateFile = templatePath + '/' + templateFile;
+    renderFile(outputPath, templateFile, ctx, callback);
   };
 
   /**
@@ -179,7 +169,7 @@ var generate = exports.generate = function generate(options) {
           if (stats.isDirectory()) {
             Fs.readdir(path, this);
           } else {
-            mProjectFiles.push(new File({ name: path, path: path }));
+            mProjectFiles.push(path);
             folderCount -= 1;
             callbackIfDone();
           }
@@ -208,14 +198,14 @@ var generate = exports.generate = function generate(options) {
     var currentFile = files.shift();
 
     if (currentFile) {
-      var fileTarget = currentFile.path.split('frameworks/')[1];
-      fileTarget = fileTarget.split(currentFile.getBaseName() + currentFile.getFileExtension())[0];
-      var streamPath = path + projectName + '/frameworks/' + fileTarget + 
-        currentFile.getBaseName() + currentFile.getFileExtension();
+      var fileTarget = currentFile.split('frameworks/')[1];
+      fileTarget = fileTarget.split(require('path').basename(currentFile))[0];
+      var streamPath = path + projectName + '/frameworks/' + fileTarget +
+        require('path').basename(currentFile);
 
       var writeStream = Fs.createWriteStream(streamPath);
 
-      Util.pump(Fs.createReadStream(currentFile.path), writeStream, function (err) {
+      Util.pump(Fs.createReadStream(currentFile), writeStream, function (err) {
           if (err) {
             throw err;
           }
