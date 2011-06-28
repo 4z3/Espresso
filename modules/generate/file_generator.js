@@ -15,13 +15,11 @@
 var Fs = require('fs');
 var File = require('../../core/file').File;
 var Renderer = require('../../lib/renderer');
-var Utils = require('../../lib/espresso_utils');
 
-var generate = exports.generate = function generate(options) {
+var generate = exports.generate = function generate(options, config) {
   var espressoPath = __dirname + '/../..';
   var templatePath = espressoPath + '/generator/templates';   
   var templateRenderer = Renderer.createRenderer(templatePath);
-  var config = Utils.readConfig(options.directory);
   var dispatcher = {};
 
 
@@ -38,7 +36,7 @@ var generate = exports.generate = function generate(options) {
     var outputPath = directory + name + '.js';
     var callback = function callback(err) {
       if (err) {
-        Utils.logErr(err);
+        console.error('Error:', err.message);
       }
     };
 
@@ -77,7 +75,7 @@ var generate = exports.generate = function generate(options) {
     var templateFile = 'targets.json';
     var callback = function callback(err) {
       if (err) {
-        Utils.logErr(err);
+        console.error('Error:', err.message);
       }
     };
 

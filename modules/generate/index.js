@@ -101,7 +101,7 @@ exports.duty = function (callback) {
       // call the generator
       console.log('options', options);
       var Generator = require('./file_generator');
-      Generator.generate(options);
+      Generator.generate(options, config);
     };
   };
 
