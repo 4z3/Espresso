@@ -13,14 +13,12 @@
  * dependencies
  */
 var mkdir = require('fs').mkdir;
-var Renderer = require('../../lib/renderer');
+var renderFile = require('mustache.js').renderFile;
 
 var generate = exports.generate = function generate(options, config) {
   var espressoPath = __dirname + '/../..';
   var templatePath = espressoPath + '/generator/templates';   
-  var templateRenderer = Renderer.createRenderer(templatePath);
   var dispatcher = {};
-
 
   /**
    * Generate new file of specific type
@@ -31,6 +29,7 @@ var generate = exports.generate = function generate(options, config) {
    * @api private
    */
   function genericGenerate(type, templateFile, name) {
+    templateFile = templatePath + '/' + templateFile;
     var directory = options.directory + '/app/' + type + '/';
     var outputPath = directory + name + '.js';
     var callback = function callback(err) {
@@ -52,13 +51,7 @@ var generate = exports.generate = function generate(options, config) {
           }
         }
 
-        templateRenderer.render({
-            templateFile: templateFile,
-            ctx: ctx,
-            outputPath: outputPath,
-            callback: callback
-          });
-
+        renderFile(outputPath, templateFile, ctx, callback);
         });
   }
 
@@ -71,7 +64,7 @@ var generate = exports.generate = function generate(options, config) {
    * @api private
    */
   dispatcher.generateTarget = function generateTarget() {
-    var templateFile = 'targets.json';
+    var templateFile = templatePath + '/targets.json';
     var callback = function callback(err) {
       if (err) {
         console.error('Error:', err.message);
@@ -82,12 +75,9 @@ var generate = exports.generate = function generate(options, config) {
       appName: config.name
     };
 
-    templateRenderer.render({
-        templateFile: templateFile,
-        ctx: ctx,
-        outputPath: options.directory + '/targets.json',
-        callback: callback
-      });
+    var outputPath = options.directory + '/targets.json';
+
+    renderFile(outputPath, templateFile, ctx, callback);
   };
 
   /**

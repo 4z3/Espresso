@@ -4,9 +4,6 @@
 [submodule "node_modules/step"]
 	path = node_modules/step
 	url = https://github.com/creationix/step.git
-[submodule "node_modules/Mu"]
-	path = node_modules/Mu
-	url = https://github.com/pfleidi/Mu.git
 [submodule "node_modules/jsdom"]
 	path = node_modules/jsdom
 	url = git@github.com:/tmpvar/jsdom
@@ -28,3 +25,6 @@
 [submodule "node_modules/operetta"]
 	path = node_modules/operetta
 	url = https://github.com/tricknik/node-operetta.git
+[submodule "submodules/mustache.js"]
+	path = submodules/mustache.js
+	url = https://github.com/janl/mustache.js
