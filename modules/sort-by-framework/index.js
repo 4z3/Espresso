@@ -16,6 +16,7 @@ exports.duty = function (callback) {
   , 'underscore'
   , 'core'
   , 'ui'
+  , 'libraries'
   , 'app/prologue'
   , 'app' 
   , 'app/epilogue'

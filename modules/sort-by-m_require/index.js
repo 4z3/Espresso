@@ -31,17 +31,37 @@ exports.duty = function (callback) {
                   );
         },
         function (T) {
-          // TODO get prefix from file
           var prefix;
-          [
+
+          // TODO don't hard code:
+          var path = [
             config.applicationDirectory + '/',
             config.applicationDirectory + '/frameworks/The-M-Project/modules/',
-          ].forEach(function (cand) {
-            if (file.filename.slice(0, cand.length) === cand) {
+          ];
+
+
+          // TODO this must already be in config! AKA search path
+          if ('libraries' in config) {
+            config.libraries.forEach(function (lib) {
+              // TODO honor refs; we're now assuming "refs": ["*"]
+              path.push(config.applicationDirectory + '/frameworks/' + lib.name + '/');
+            });
+          };
+
+          // Find file corresponding to the m_require()d name. 
+          var name = T.second[0].value;
+          path.forEach(function (cand) {
+            if (cand + name in config.files) {
               prefix = cand;
             };
           });
-          dependency_graph[file.filename].push(prefix + T.second[0].value);
+          if (!prefix) {
+            console.error(
+              'Error: bad m_require(' + JSON.stringify(name) + ') in '
+              + file.filename);
+          } else {
+            dependency_graph[file.filename].push(prefix + name);
+          };
         });
     };
   });

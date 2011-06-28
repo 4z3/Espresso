@@ -17,6 +17,7 @@ exports.subcommand = {
 exports.deps = [
   'config',
   'The-M-Project',
+  'libraries',
   'index.html',
   'save-local',
   'eliminate',

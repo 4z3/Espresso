@@ -75,6 +75,7 @@ exports.duty = function (callback) {
       var agenda = [
         //'config',
         'The-M-Project',
+        'libraries',
         'index.html',
         'eliminate',
         'app',
