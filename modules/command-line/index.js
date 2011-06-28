@@ -29,20 +29,40 @@ exports.duty = function (callback) {
         // This hack fools Operetta to treat subcommand like normal commands.
         command.parent = false;
 
+        function handle_parameter(par, value) {
+          switch (typeof par.handler) {
+            case 'string':
+              switch(par.handler) {
+                case 'config/Array.prototype.push':
+                  if (!(par.config in config)) {
+                    config[par.config] = [];
+                  };
+                  if (!(config[par.config] instanceof Array)) {
+                    console.error('Error:', par.config, 'is not and array');
+                    throw new Error('You are made of stupid!');
+                  } else {
+                    config[par.config].push(value);
+                    console.log(
+                      'config[' + JSON.stringify(par.config) + ']'
+                      + '.push(' + JSON.stringify(value) + ')');
+                  };
+                  break;
+                case 'config':
+                  config[par.config] = value;
+                  console.log(
+                    'config[' + JSON.stringify(par.config) + ']'
+                    + ' = ' + JSON.stringify(value));
+                  break;
+              };
+              break;
+          };
+        };
+
         // setup subcommand parameters
         if (sub.parameters instanceof Array) {
           sub.parameters.forEach(function (par) {
             command.parameters(par.options, par.description, function (value) {
-              switch (typeof par.handler) {
-                case 'string':
-                  switch(par.handler) {
-                    case 'config':
-                      config[par.config] = value;
-                      console.log('set', par.config, 'to', value);
-                      break;
-                  };
-                  break;
-              };
+              handle_parameter(par, value);
             });
           });
         };
@@ -51,16 +71,7 @@ exports.duty = function (callback) {
         if (sub.options instanceof Array) {
           sub.options.forEach(function (par) {
             command.options(par.options, par.description, function (value) {
-              switch (typeof par.handler) {
-                case 'string':
-                  switch(par.handler) {
-                    case 'config':
-                      config[par.config] = value;
-                      console.log('set', par.config, 'to', value);
-                      break;
-                  };
-                  break;
-              };
+              handle_parameter(par, value);
             });
           });
         };
