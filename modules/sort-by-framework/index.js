@@ -17,6 +17,7 @@ exports.duty = function (callback) {
   , 'core'
   , 'ui'
   , 'libraries'
+  , 'app/i18n'
   , 'app/prologue'
   , 'app' 
   , 'app/epilogue'
