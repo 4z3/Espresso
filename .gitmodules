@@ -13,3 +13,6 @@
 [submodule "node_modules/mu"]
 	path = node_modules/mu
 	url = https://github.com/raycmorgan/Mu
+[submodule "modules/spritemapper/github/yostudios/Spritemapper"]
+	path = modules/spritemapper/github/yostudios/Spritemapper
+	url = git://github.com/yostudios/Spritemapper.git
