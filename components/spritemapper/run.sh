@@ -168,7 +168,7 @@ EOF
     #
     # process all the css within a folder
     #
-    find . -type f -name '*.css' | xargs "$0"
+    find "$arg" -type f -name '*.css' | xargs "$0"
   else
     echo 'Error 1: You are made of stupid!' >&2
     exit 23
