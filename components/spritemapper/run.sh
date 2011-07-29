@@ -20,6 +20,10 @@ exe="$bindir/spritemapper"
 if ! test -e "$exe"; then
   (cd "$srcdir" && python setup.py install --root "$prefix")
 fi
+if head -n 1 "$exe" | grep '^#!\.$'; then
+  echo "Error: \`python setup.py install --root \"$prefix\"' failed to produce a correct executable \"$exe\".  This is a known bug and we don't know who is made of stupid... but we'll fix now so you don't have to worry...^_^" >&2
+  sed -i -r '1s:.*:#! /usr/bin/env python:' "$exe"
+fi
 
 # XXX we assume there's only one python* directory... else we will die...
 SM_PYTHON_PATH="`find "$libdir" -name 'python*' -d -mindepth 1 -maxdepth 1
@@ -87,69 +91,79 @@ for arg; do
 anneal_steps = 0
 output_css = $output_css
 EOF
-      spritemapper -v -c "$conf" "$css" 2>&1 | tee "$log"
+      spritemapper -c "$conf" "$css" 2>&1 | tee "$log" |
+          sed -n '/Traceback/!{p;b};:q;n;bq'
 
-      sed -rn 's/^writing spritemap image at (.*)/\1/p' "$log" > "$spritemaps"
-      sed -rn 's/^writing new css at (.*)/\1/p' "$log" > "$newcss"
+      if ! grep -q 'Traceback' "$log"; then
+        sed -rn 's/^writing spritemap image at (.*)/\1/p' "$log" > "$spritemaps"
+        sed -rn 's/^writing new css at (.*)/\1/p' "$log" > "$newcss"
 
-      #
-      # (B)
-      #
+        #
+        # (B)
+        #
 
-      while read f; do
-        allcssurls < "$f"
-      done < "$newcss" > "$allnewcssimages"
-      
-      # find all images that were bundled into spritemaps
-      # i.e. all images that were in cass but ain't in newcss
-      diff "$allimages" "$allnewcssimages" |
-      sed -n 's/^< //p' > "$bundledimages"
+        while read f; do
+          allcssurls < "$f"
+        done < "$newcss" > "$allnewcssimages"
+        
+        # find all images that were bundled into spritemaps
+        # i.e. all images that were in cass but ain't in newcss
+        diff "$allimages" "$allnewcssimages" |
+        sed -n 's/^< //p' > "$bundledimages"
 
-      # find all images that were not bundled into spritemaps
-      set -- "$allimages" "$allnewcssimages"
-      diff -U "`wc -l "$@" | tail -n 1 | awk '{print$1}'`" "$@" |
-      sed -n 's/^ //p' > "$unbundledimages"
+        # find all images that were not bundled into spritemaps
+        set -- "$allimages" "$allnewcssimages"
+        diff -U "`wc -l "$@" | tail -n 1 | awk '{print$1}'`" "$@" |
+        sed -n 's/^ //p' > "$unbundledimages"
 
-      # remove unbundled images from original css
-      sed "`
-        cat "$unbundledimages" |
-        sed 's:/:\\\\\\\\/:g' |
-        while read url; do
-          echo "s/$url/-/g"
-        done
-      `" "$css" > "$bundlecss"
+        # remove unbundled images from original css
+        sed "`
+          cat "$unbundledimages" |
+          sed 's:/:\\\\\\\\/:g' |
+          while read url; do
+            echo "s/$url/-/g"
+          done
+        `" "$css" > "$bundlecss"
 
-      #
-      # (C)
-      #
+        #
+        # (C)
+        #
 
-      cat>"$conf"<<EOF
+        cat>"$conf"<<EOF
 [spritemapper]
 output_css = $output_bundlecss
 EOF
-      spritemapper -v -c "$conf" "$bundlecss" 2>&1 #| tee "$bundlecsslog"
+        spritemapper -c "$conf" "$bundlecss" |
+            sed '/^ERROR:spritecss.main:-: not readable$/d'
 
-      #
-      # (D)
-      #
+        #
+        # (D)
+        #
 
-      # replace original css with new css
-      {
-        echo "$css_sentinel"
-        while read f; do
-          cat "$f"
-        done < "$newcss"
-      } > "$css"
+        # replace original css with new css
+        {
+          echo "$css_sentinel"
+          while read f; do
+            cat "$f"
+          done < "$newcss"
+        } > "$css"
 
-      # remove bundled images
-      sed 's/^/rm /' "$bundledimages" | sh
+        # remove bundled images
+        sed 's/^/rm /' "$bundledimages" | sh
+
+        color=32
+      else
+        color=31
+      fi
 
       cleanup
       trap - EXIT
       cd "$OLDPWD"
     else
-      echo "Skip already processed CSS: $arg" >&2
+      color=33
     fi
+
+    echo "[$color;1m$arg[m" >&2
   elif test -d "$arg"; then
     #
     # process all the css within a folder
