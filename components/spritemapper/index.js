@@ -13,6 +13,7 @@ module.exports = function (name, config) {
     var command = __dirname + '/run.sh';
     var args = [path];
     var options = {
+      pwd: process.cwd(),
       env: Object.create(config)
     };
 
