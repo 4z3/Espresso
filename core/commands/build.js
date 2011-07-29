@@ -34,6 +34,24 @@ exports.run = function run(params) {
   app.loadTheMProject();
 
   app.build(function (options) {
-      app.saveLocal(options);
+      app.saveLocal(function () {
+        var Conductor = new require('../../lib/conductor');
+        var conductor = new Conductor(app);
+        var filter = app.filter instanceof Array ? app.filter : [];
+
+        // TODO get buildDir from some authoritative place
+        var path = [
+          app.applicationDirectory, app.outputFolder, app.buildVersion
+        ].join('/');
+
+        (function run (i) {
+          if (i < filter.length) {
+            var name = filter[i];
+            return conductor.run(name, path, function () {
+              return run(i + 1);
+            });
+          };
+        })(0);
+      });
     });
 };
