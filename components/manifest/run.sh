@@ -8,9 +8,9 @@ cd "$1"
 make_filter() {
   # generate a sed script that filters out every line in $1 from stdin
   echo "$1" | sed -r '
-    s:/|\.|\[|\]|\*|\\:\\&:g
-    s:.*:/&/d:;#blah
-    # s:.*:s/&/# \&/:;# only comment out every line
+    s:/|\.|\[|\]|\*|\\:\\&:g  ;# escape all special chars in $1
+    s:.*:/&/d:                ;# generate a delete command for each line in $1
+    #s:.*:s/&/# \&/:           ;# only comment out every line
   '
 }
 
