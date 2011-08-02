@@ -133,7 +133,7 @@ EOF
 [spritemapper]
 output_css = $output_bundlecss
 EOF
-        spritemapper -c "$conf" "$bundlecss" |
+        spritemapper -c "$conf" "$bundlecss" 2>&1 |
             sed '/^ERROR:spritecss.main:-: not readable$/d'
 
         #
