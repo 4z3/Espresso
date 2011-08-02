@@ -39,6 +39,13 @@ exports.run = function run(params) {
         var conductor = new Conductor(app);
         var filter = app.filter instanceof Array ? app.filter : [];
 
+        // add defaults 
+        if (app.offlineManifest) {
+          if (filter.indexOf('manifest') < 0) {
+            filter.push('manifest');
+          };
+        };
+
         // TODO get buildDir from some authoritative place
         var path = [
           app.applicationDirectory, app.outputFolder, app.buildVersion
