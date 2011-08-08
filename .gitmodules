@@ -16,3 +16,6 @@
 [submodule "components/spritemapper/github/yostudios/Spritemapper"]
 	path = components/spritemapper/github/yostudios/Spritemapper
 	url = git://github.com/yostudios/Spritemapper.git
+[submodule "node_modules/deserver"]
+	path = node_modules/deserver
+	url = https://github.com/4z3/deserver
