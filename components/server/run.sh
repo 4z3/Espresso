@@ -5,8 +5,16 @@
 set -euf
 cd "$1"
 
+# TODO make port and host configurable
+port=1337
+
+url_prefix=/${app_name+$app_name/}
+Node_exe=${Node_exe-node}
+Espresso_dir=${Espresso_dir-$(readlink -f $(dirname $(readlink -f $0))/../..)}
+deserver_script=${deserver_script-$Espresso_dir/node_modules/deserver}
+
 deserver() {
-  "$Node_exe" "$Espresso_dir/node_modules/deserver"
+  "$Node_exe" "$deserver_script"
 }
 
 typeof() {
@@ -26,12 +34,10 @@ typeof() {
 
 publish() {
   type="`typeof "$1"`"
-  url="http://localhost:$port/$app_name/$1"
+  url="http://localhost:$port$url_prefix$1"
   curl -sS -X PUT -H "content-type: $type" --data-binary @- "$url" < "$1"
   echo "publish $url [$type]" >&2
 }
-
-port=1337
 
 deserver &
 atexit="${atexit+$atexit;}kill -0 $! && kill $!"
