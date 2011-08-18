@@ -14,6 +14,9 @@ module.exports = function (name, config, legacy_config) {
     env.app_name = legacy_config.name;
     env.Node_exe = process.argv[0];
     env.Espresso_dir = __dirname + '/../..';
+    env.Espresso_exe = process.argv[1]; // TODO ensure this is an espresso exe
+    env.PATH = process.env.PATH;
+    env.HOME = process.env.HOME;
 
     var command = __dirname + '/run.sh';
     var args = [path];
