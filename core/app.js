@@ -94,6 +94,12 @@ var App = exports.App = function (options, server) {
   this.reporter = new Report();
   this.applicationDirectory = options.directory;
 
+  var configFilename = options.config || 'config.json';
+  if (configFilename[0] !== '/') {
+    configFilename = this.applicationDirectory + '/' + configFilename;
+  };
+  this.applicationConfig = configFilename;
+
   this.loadJSONConfig();
 };
 
@@ -120,7 +126,7 @@ App.prototype.addOptions = function (build_options) {
  * The 'config.json', should be in the root folder of the project to build.
  */
 App.prototype.loadJSONConfig = function () {
-  var config = Utils.readConfig(this.applicationDirectory);
+  var config = Utils.readConfig(this.applicationConfig);
   this.addOptions(config);
 
   if (config.cacheFallbacks) {

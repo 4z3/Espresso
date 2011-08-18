@@ -22,7 +22,7 @@ var generate = exports.generate = function generate(options) {
   var espressoPath = __dirname + '/..';
   var templatePath = __dirname + '/templates';   
   var templateRenderer = Renderer.createRenderer(templatePath);
-  var config = Utils.readConfig(options.directory);
+  var config = Utils.readConfig(options.directory + '/config.json');
   var dispatcher = {};
 
 

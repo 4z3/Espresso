@@ -47,7 +47,7 @@ var Server = exports.Server = function (options) {
 };
 
 Server.prototype.loadJSONConfig = function () {
-  var config = Utils.readConfig(this.applicationDirectory);
+  var config = Utils.readConfig(this.applicationConfig);
   this.appName = config.name;
 
   if (config.proxies) {

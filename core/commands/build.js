@@ -19,6 +19,11 @@ exports.examples = [
 
 exports.options = {
 
+  config: {
+    'description': 'Specify a custom config',
+    'hasargument': true
+  },
+
   directory: {
     'description': 'Specify a custom project directory',
     'default': '$PWD',
